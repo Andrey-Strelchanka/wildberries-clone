@@ -11,7 +11,8 @@ const busketClear = document.getElementById("modal__btn")
 
 
 let totalPrice = 0;
-let arr = [];
+let basketList = [];
+
 
 //СОБЫТИЯ МОДАЛКИ КОРЗИНЫ
 busketBtn.onclick = function(){
@@ -33,12 +34,21 @@ busketClear.onclick = function(){
 }
 
 
+
 //ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
 const moveToBasket = async (id) => {
     let responce = await fetch(`https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB/${id}`)
     let data =  await responce.json();
     console.log(data)
-    arr.push(data)
+
+    if(localStorage.getItem(basketList)){
+        basketList = JSON.parse(localStorage.getItem(basketList));
+        moveToBasket ()
+    }
+
+    basketList.push(data)
+
+    localStorage.setItem('basketList', JSON.stringify(basketList)); 
 
     modalContent.innerHTML += `<div id="${data.id}" class="basketInner__wrapper">
     <img src="${data.url}" class="basketInner__img" alt="">
