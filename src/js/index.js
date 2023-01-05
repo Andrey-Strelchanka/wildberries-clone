@@ -8,6 +8,7 @@ const modalContent = document.getElementById("myModal__inner")
 const modalPictureContent = document.getElementById("myModalPicture__inner")
 const modalTotalPrice = document.getElementById("modal__final-price")
 const busketClear = document.getElementById("modal__btn")
+const inputSearch = document.getElementById("header__input-search")
 
 
 let totalPrice = 0;
@@ -83,14 +84,46 @@ const openModalPicture = async(id) =>{
 `;
 }
 
-async function makeCards(){
+
+
+
+//Поиск карточек через INPUT
+async function getCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
-    return await responce.json()
+    return  await responce.json()
            .then(function(el){
-            
+                makeCards(el)
+    })
+}
+
+
+// let filterElements = [];
+// async function filterCards() {
+//     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
+//     return  await responce.json()
+//            .then(function(data){
+              
+//             inputSearch.addEventListener("input", (e)=>{
+//                 filterElements = data.filter((el)=>{
+//                     el.title.toLowerCase().includes(e.target.value.toLowerCase())
+//                 })
+//                 console.log(filterElements)
+//                 makeCards(filterElements)
+//                 })
+
+//     })
+    
+// }
+// filterCards()
+
+
+//Загрузка карточек на сайт с mockApi
+function makeCards(el){
+    // let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
+    // return  await responce.json()
+    //        .then(function(el){
         let displayCard = '';
         el.forEach(function (item){
-            
         displayCard = `
         <div id="${item.id}" class="card">
             <img src="${item.url}" class="card-img-top" alt="">
@@ -118,8 +151,8 @@ async function makeCards(){
         cards  
             .querySelector(`button[id="img_${item.id}"]`)
             .addEventListener("click", () => openModalPicture(item.id))
+
     })
 
-})}
-
-makeCards()
+}
+getCards()
