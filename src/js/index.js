@@ -13,7 +13,7 @@ const inputSearch = document.getElementById("header__input-search")
 
 let totalPrice = 0;
 let basketList = [];
-
+let filterElements = [];
 
 //СОБЫТИЯ МОДАЛКИ КОРЗИНЫ
 busketBtn.onclick = function(){
@@ -35,21 +35,22 @@ busketClear.onclick = function(){
 }
 
 
+if(localStorage.getItem('basketList')){
+    basketList = JSON.parse(localStorage.getItem('basketList'));
+
+}
 
 //ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
-const moveToBasket = async (id) => {
+const moveToBasket = async(id) => {
     let responce = await fetch(`https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB/${id}`)
     let data =  await responce.json();
     console.log(data)
 
-    if(localStorage.getItem(basketList)){
-        basketList = JSON.parse(localStorage.getItem(basketList));
-        moveToBasket ()
-    }
-
     basketList.push(data)
+    console.log(basketList)
 
     localStorage.setItem('basketList', JSON.stringify(basketList)); 
+ 
 
     modalContent.innerHTML += `<div id="${data.id}" class="basketInner__wrapper">
     <img src="${data.url}" class="basketInner__img" alt="">
@@ -64,9 +65,9 @@ const moveToBasket = async (id) => {
 
 totalPrice += data.truePrice;
 modalTotalPrice.innerHTML = totalPrice;
-
 }
 
+//МОДАЛКА НА КАРТОЧКИ
 const openModalPicture = async(id) =>{
     let responce = await fetch(`https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB/${id}`)
     let data =  await responce.json();
@@ -87,7 +88,7 @@ const openModalPicture = async(id) =>{
 
 
 
-//Поиск карточек через INPUT
+//СОЗДАНИЕ КАРТОЧЕК (ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА)
 async function getCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
     return  await responce.json()
@@ -97,33 +98,31 @@ async function getCards() {
 }
 
 
-// let filterElements = [];
-// async function filterCards() {
-//     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
-//     return  await responce.json()
-//            .then(function(data){
-              
-//             inputSearch.addEventListener("input", (e)=>{
-//                 filterElements = data.filter((el)=>{
-//                     el.title.toLowerCase().includes(e.target.value.toLowerCase())
-//                 })
-//                 console.log(filterElements)
-//                 makeCards(filterElements)
-//                 })
+//ПОИСК ЭЛЕМЕНТОВ ЧЕРЕЗ INPUT
+async function filterCards() {
+    let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
+    return  await responce.json()
+        .then(function(data){
+        inputSearch.addEventListener("input", (e)=>{
+            cards.innerHTML='';
+            filterElements = data.filter((el)=>{
+                return el.title.toLowerCase().includes(e.target.value.toLowerCase())
+            })
+            console.log(filterElements)
+            // makeCards(filterElements)
+            makeCards(filterElements)
+        })
 
-//     })
+    })
     
-// }
-// filterCards()
+}
+filterCards()
 
 
 //Загрузка карточек на сайт с mockApi
-function makeCards(el){
-    // let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
-    // return  await responce.json()
-    //        .then(function(el){
+function makeCards(data){
         let displayCard = '';
-        el.forEach(function (item){
+        data.forEach(function (item){
         displayCard = `
         <div id="${item.id}" class="card">
             <img src="${item.url}" class="card-img-top" alt="">
