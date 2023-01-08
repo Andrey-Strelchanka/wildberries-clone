@@ -9,7 +9,7 @@ const modalPictureContent = document.getElementById("myModalPicture__inner")
 const modalTotalPrice = document.getElementById("modal__final-price")
 const busketClear = document.getElementById("modal__btn")
 const inputSearch = document.getElementById("header__input-search")
-
+const preloader = document.getElementById("preloader")
 
 let totalPrice = 0;
 let basketList = [];
@@ -103,6 +103,11 @@ async function filterCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
     return  await responce.json()
         .then(function(data){
+            preloader.style.opacity = "0";
+            preloader.style.visibility = "hidden";
+            cards.style.opacity = "1"
+            cards.style.visibility = "visible"
+
         inputSearch.addEventListener("input", (e)=>{
             cards.innerHTML='';
             filterElements = data.filter((el)=>{

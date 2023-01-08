@@ -1,13 +1,22 @@
+@import "cards.scss";
+@import "modals.scss";
+@import "preloader.scss";
+@import "slider.scss";
+
+
 *, *:after, *:before{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 .header{
-    width: 1200px;
-    margin: 0 auto;
-    margin-bottom: 20px;
-    margin-top: 10px;
+    display: block;
+    width: 100%;
+    position: fixed;
+    z-index: 5;
+    background-color: #fefefe;
+    margin-top: -56px;
+    height: 50px;
 }
 .container{
     width: 1140px;
@@ -50,224 +59,20 @@
     border:0;
 }
 
-//МОДАЛЬНОЕ ОКНО ДЛЯ КОРЗИНЫ
-.modal {
-display: none;
-position: fixed;
-z-index: 1;
-left: 0;
-top: 0;
-width: 100%;
-height: 100%;
-overflow: auto;
-background-color: rgba(0,0,0,0.8);
-    &__content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border:1px solid #888;
-        width: 90%;
-        height: 90%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    &__close {
-        color:#aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    &__inner {
-        display: flex;
-        flex-wrap: wrap;
-        overflow-y: scroll;
-    }
-    &__check-block{
-        display: flex;
-        justify-content: space-between;
-    }
-    &__btn-delete{
-        width: 100px;
-        height: 36px;
-        border:none;
-        border-radius: 10px;
-        background-color: #fefefe;
-        border:2px solid black;
-        color:#000;
-        margin-left: 40px;
-        margin-right: 40px;
-        &:hover{
-            background-color: gray;
-            border:0;
-        }
-    }
-
-}
-
-//МОДАЛЬНОЕ ОКНО ДЛЯ КАРТИНКИ
-.modalPicture {
-    display: none;
-    position: fixed;
-    z-index: 3;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-        &__content {
-            background-color: #fefefe;
-            margin: auto;
-            margin-top: 20px;
-            padding: 20px;
-            border:1px solid #888;
-            width: 500px;
-            height: 500px;
-            display: flex;
-            flex-direction: column;
-        }
-        &__close {
-            color:#aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        &__inner > img{
-            width: 400px;
-            height: 400px;
-            display: block;
-            margin: 0 auto;
-        }
-    
-    }
-
-
-
-#row{
-    display: flex;
-    flex-wrap:wrap;
-    justify-content: center;
-    width: 1200px;
-    margin: 0 auto;
-    margin-top: 50px;
-}
-.card-img-top{
-    width: 30px;
-    height: 270px;
-    padding: 20px;
-}
-
-.card{
-    margin-bottom: 10px;
-    margin-right: 10px;
-    display: flex;
-    flex: 0 1 270px;
-    :last-child{
-        margin-right: 0;
-    }
-    width: 1140px;
-    position: relative;
-}
-
-
-
-//MODAL ON
-#card__modal{
-    position: relative;
-    top:-50%;
-    left:35%;
-}
-.card:hover .card__modal-btn{
-    opacity:1;
-    transition: 0.5s;
-  }
-.card__modal-btn{
-    border:none;
-    background-color: #D4D4D4;
-    opacity:0;
-    color:#000;
-    border-radius:50px;
-    width: 100px;
-    height: 30px;
-}
-
-//MODAL IN
-.basketInner {
-
-    &__wrapper {
-        width: 250px;
-        padding: 10px;
-        margin-right: 15px;
-        margin-bottom: 15px;
-        border:1px solid gray;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    &__img {
-        width: 130px;
-        height: 150px;
-        
-    }
-
-    &__box {
-        text-align: center; 
-    }
-    &__title{
-
-    }
-    &__block {
-     
-    }
-
-    &__textTrue {
-        
-    }
-
-    &__textFalse {
-    }
-}
 
 
 
 
 
 
-//SLIDER
-.d-block{
-    height: 500px;
-    width: 600px;
-}
-#carouselExampleIndicators{
-    width: 1200px;
-    margin: 0 auto;
-}
-.w-100{
-    border-radius: 50px;
-}
-.carousel{
-    height: 500px;
-}
 
-.slider{
-    width: 500px;
-}
-.carousel-inner{
-    width: 200px;
-}
-.card-block{
-    display: flex;
-    justify-content: space-between;
-}
-#card__falsePrice{
-    text-decoration: line-through;
-    opacity: 0.5;
-}
+
+
+
+
+
+
+
 
 
 
