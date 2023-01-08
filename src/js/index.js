@@ -12,7 +12,6 @@ const inputSearch = document.getElementById("header__input-search")
 const preloader = document.getElementById("preloader")
 
 let totalPrice = 0;
-let basketList = [];
 let filterElements = [];
 
 //СОБЫТИЯ МОДАЛКИ КОРЗИНЫ
@@ -31,26 +30,22 @@ window.onclick = function(event){
 //УДАЛЕНИЕ ТОВАРОВ ИЗ КОРЗИНЫ
 busketClear.onclick = function(){
     modalContent.innerHTML='';
-    modalTotalPrice.innerHTML=0;
+    modalTotalPrice.innerText=0;
+    localStorage.clear();
 }
 
 
-if(localStorage.getItem('basketList')){
-    basketList = JSON.parse(localStorage.getItem('basketList'));
+const countPrice = (data) =>{
+    totalPrice += data.truePrice;
+    modalTotalPrice.innerText = totalPrice;
 
 }
+
 
 //ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
 const moveToBasket = async(id) => {
     let responce = await fetch(`https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB/${id}`)
     let data =  await responce.json();
-    console.log(data)
-
-    basketList.push(data)
-    console.log(basketList)
-
-    localStorage.setItem('basketList', JSON.stringify(basketList)); 
- 
 
     modalContent.innerHTML += `<div id="${data.id}" class="basketInner__wrapper">
     <img src="${data.url}" class="basketInner__img" alt="">
@@ -62,10 +57,43 @@ const moveToBasket = async(id) => {
     </div>
 </div>
 `;
+countPrice(data)
+updateStorage()
 
-totalPrice += data.truePrice;
-modalTotalPrice.innerHTML = totalPrice;
 }
+
+//Парсинг
+const initialState = () =>{
+    if(localStorage.getItem('products') !== null){
+        modalContent.innerHTML = localStorage.getItem('products');
+    }
+
+    if(localStorage.getItem('price') !== null){
+        modalTotalPrice.innerText = localStorage.getItem('price');
+    }
+}
+initialState()
+
+//Добавление КОРЗИНЫ в localStorage
+const updateStorage = () =>{
+    let storageBasket = modalContent.innerHTML;
+    let storageBasketPrice = modalTotalPrice.innerText;
+
+
+    if(storageBasket .length){
+        localStorage.setItem('products',storageBasket)
+    } else{
+        localStorage.removeItem('products')
+    }
+
+    if(storageBasketPrice .length){
+        localStorage.setItem('price',storageBasketPrice)
+    } else{
+        localStorage.removeItem('price')
+    }
+
+}
+
 
 //МОДАЛКА НА КАРТОЧКИ
 const openModalPicture = async(id) =>{
@@ -84,7 +112,6 @@ const openModalPicture = async(id) =>{
     <img src="${data.url}" class="basketInner__img" alt="">
 `;
 }
-
 
 
 
