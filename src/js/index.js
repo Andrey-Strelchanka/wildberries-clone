@@ -24,15 +24,17 @@ busketClear.onclick = function(){
 
 //СОБЫТИЯ МОДАЛКИ КОРЗИНЫ
 busketBtn.onclick = function(){
-        modal.style.display = "block";
+    modal.style.display = "block";
 }
 modalCloseBtn.onclick = function(){
-        modal.style.display = "none";
+    modal.style.display = "none";
 }
 window.onclick = function(event){
-        if(event.target == modal){
-            modal.style.display = "none"
-        }
+    console.log(event.target)
+    console.log(event.target == modal)
+    if(event.target == modal){
+        modal.style.display = "none"
+    }
 }
 
 //ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
@@ -57,6 +59,7 @@ updateStorage()
 
 
 }
+
 
 //Парсинг
 const initialState = () =>{
