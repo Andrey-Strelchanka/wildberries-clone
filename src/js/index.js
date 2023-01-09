@@ -14,18 +14,6 @@ const preloader = document.getElementById("preloader")
 let totalPrice = 0;
 let filterElements = [];
 
-//СОБЫТИЯ МОДАЛКИ КОРЗИНЫ
-busketBtn.onclick = function(){
-    modal.style.display = "block";
-}
-modalCloseBtn.onclick = function(){
-    modal.style.display = "none";
-}
-window.onclick = function(event){
-        if(event.target == modal){
-            modal.style.display = "none"
-        }
-}
 
 //УДАЛЕНИЕ ТОВАРОВ ИЗ КОРЗИНЫ
 busketClear.onclick = function(){
@@ -34,13 +22,18 @@ busketClear.onclick = function(){
     localStorage.clear();
 }
 
-
-const countPrice = (data) =>{
-    totalPrice += data.truePrice;
-    modalTotalPrice.innerText = totalPrice;
-
+//СОБЫТИЯ МОДАЛКИ КОРЗИНЫ
+busketBtn.onclick = function(){
+        modal.style.display = "block";
 }
-
+modalCloseBtn.onclick = function(){
+        modal.style.display = "none";
+}
+window.onclick = function(event){
+        if(event.target == modal){
+            modal.style.display = "none"
+        }
+}
 
 //ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
 const moveToBasket = async(id) => {
@@ -57,8 +50,11 @@ const moveToBasket = async(id) => {
     </div>
 </div>
 `;
-countPrice(data)
+
+totalPrice += data.truePrice;
+modalTotalPrice.innerText = totalPrice;
 updateStorage()
+
 
 }
 
@@ -69,8 +65,9 @@ const initialState = () =>{
     }
 
     if(localStorage.getItem('price') !== null){
-        modalTotalPrice.innerText = localStorage.getItem('price');
-    }
+        totalPrice = parseInt(localStorage.getItem('price'))
+        modalTotalPrice.innerText = totalPrice;
+    } 
 }
 initialState()
 
@@ -80,13 +77,13 @@ const updateStorage = () =>{
     let storageBasketPrice = modalTotalPrice.innerText;
 
 
-    if(storageBasket .length){
+    if(storageBasket.length){
         localStorage.setItem('products',storageBasket)
     } else{
         localStorage.removeItem('products')
     }
 
-    if(storageBasketPrice .length){
+    if(storageBasketPrice.length){
         localStorage.setItem('price',storageBasketPrice)
     } else{
         localStorage.removeItem('price')
@@ -119,9 +116,13 @@ const openModalPicture = async(id) =>{
 async function getCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
     return  await responce.json()
-           .then(function(el){
-                makeCards(el)
-    })
+        .then(function(el){
+            preloader.style.opacity = "0";
+            preloader.style.visibility = "hidden";
+            cards.style.opacity = "1"
+            cards.style.visibility = "visible"
+            makeCards(el)
+        })
 }
 
 
@@ -130,11 +131,6 @@ async function filterCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
     return  await responce.json()
         .then(function(data){
-            preloader.style.opacity = "0";
-            preloader.style.visibility = "hidden";
-            cards.style.opacity = "1"
-            cards.style.visibility = "visible"
-
         inputSearch.addEventListener("input", (e)=>{
             cards.innerHTML='';
             filterElements = data.filter((el)=>{
