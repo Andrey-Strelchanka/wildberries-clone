@@ -1,27 +1,19 @@
 {
   "name": "wildberries-clone",
   "version": "1.0.0",
+  "description": "",
   "source": "index.html",
   "scripts": {
     "start": "parcel",
     "build": "parcel build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Andrey-Strelchanka/wildberries-clone.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Andrey-Strelchanka/wildberries-clone/issues"
-  },
-  "homepage": "https://github.com/Andrey-Strelchanka/wildberries-clone#readme",
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "parcel": "^2.8.2"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.8.2"
-  },
-  "main": "index.js",
-  "description": ""
+  }
 }
