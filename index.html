@@ -9,6 +9,11 @@
     <title>Wildberries</title>
 </head>
 <body>
+
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+
     <header class="header">
         <div class="container">
             <div class="header__img"><picture>
@@ -75,26 +80,8 @@
     <section class="popular">
         <div class="container">
             <h1 class="popular__title">Хиты продаж</h1>
-            <div class="row">
-                <div class="popular__card">
-                    <div class="popular__img">
-                        <img class="popular__image" src="./src/img/img.jpg" alt="image">
-                        <div class="popular__enlarge-img" id="enlarge-img">
-                            <img src="./src/img/enlarge.png" alt="enlarge">
-                        </div>
-                    </div>
-                    <div class="popular__top">
-                        <div class="popular_wrap">
-                            <h2 class="popular__card-title">Snowboard</h2>
-                            <p class="popular__price">900 руб.</p>
-                        </div>
-                        <div class="popular__perc-discount">-10%</div>
-                    </div>
-                    <div class="popular__bottom">
-                        <p class="popular__old-price">1000 руб.</p>
-                        <button class="popular__card-btn btn">В корзину</button>
-                    </div>
-                </div>
+            <div class="row" id="row">
+
             </div>
         </div>
     </section>
@@ -125,9 +112,11 @@
     </div>
 
     <div class="modal-pic" id="modal-pic">
-        <div class="modal-pic__body">
+        <div class="modal-pic__body" id="modal-pic__body">
             <div class="modal-pic__close" id="modal-pic-close">&#10006</div>
-            <img src="./src/img/img.jpg" alt="" class="modal-pic__img">
+            <div class="modal-pic__wrapper-img" id="modal-pic__wrapper-img">
+
+            </div>
         </div>
     </div>
 

@@ -13,7 +13,7 @@ const preloader = document.getElementById("preloader")
 
 let totalPrice = 0;
 let filterElements = [];
-
+let basketArr = [];
 
 //УДАЛЕНИЕ ТОВАРОВ ИЗ КОРЗИНЫ
 busketClear.onclick = function(){
@@ -38,10 +38,12 @@ window.onclick = function(event){
 }
 
 //ДОБАВЛЕНИЕ ТОВАРОВ В КОРЗИНУ
-const moveToBasket = async(id) => {
-    let responce = await fetch(`https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB/${id}`)
-    let data =  await responce.json();
-
+const moveToBasket = async(data) => {
+    // let responce = await fetch(`https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB/${id}`)
+    // let data = await responce.json();
+    basketArr.push(data)
+    console.log(basketArr)
+    localStorage.setItem('data',JSON.stringify(data))
     modalContent.innerHTML += `<div id="${data.id}" class="basketInner__wrapper">
     <img src="${data.url}" class="basketInner__img" alt="">
     <div class="basketInner__box">
@@ -53,10 +55,10 @@ const moveToBasket = async(id) => {
 </div>
 `;
 
+
 totalPrice += data.truePrice;
 modalTotalPrice.innerText = totalPrice;
 updateStorage()
-
 
 }
 
@@ -114,7 +116,6 @@ const openModalPicture = async(id) =>{
 }
 
 
-
 //СОЗДАНИЕ КАРТОЧЕК (ПОЛУЧЕНИЕ ДАННЫХ С СЕРВЕРА)
 async function getCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
@@ -127,13 +128,14 @@ async function getCards() {
             makeCards(el)
         })
 }
-
+getCards()
 
 //ПОИСК ЭЛЕМЕНТОВ ЧЕРЕЗ INPUT
 async function filterCards() {
     let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
     return  await responce.json()
         .then(function(data){
+          
         inputSearch.addEventListener("input", (e)=>{
             cards.innerHTML='';
             filterElements = data.filter((el)=>{
@@ -148,7 +150,6 @@ async function filterCards() {
     
 }
 filterCards()
-
 
 //Загрузка карточек на сайт с mockApi
 function makeCards(data){
@@ -170,12 +171,13 @@ function makeCards(data){
             </div>
         </div>
         `;
+        
         cards.insertAdjacentHTML("afterbegin", displayCard);
 
         //КЛИК НА КНОПКУ "Добавить в корзину"
         cards  
             .querySelector(`button[data-id="${item.id}"]`)
-            .addEventListener("click", () => moveToBasket(item.id));
+            .addEventListener("click", () => moveToBasket(item));
 
         //КЛИК НА КНОПКУ "Quick view"
         cards  
@@ -185,4 +187,3 @@ function makeCards(data){
     })
 
 }
-getCards()
