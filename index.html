@@ -10,9 +10,9 @@
 </head>
 <body>
 
-  <div id="preloader">
+  <!-- <div id="preloader">
     <div class="loader"></div>
-  </div>
+  </div> -->
 
     <header class="header">
         <div class="container">
@@ -23,11 +23,11 @@
               </picture></div>
             <input class="header__input" type="text" id="search" placeholder="Поиск...">
             <button class="header__cart-btn btn" id="cart">Корзина
-                <div class="header__cart-pic_count">0</div>
+                <div class="header__cart-pic_count" id="cart-counter">0</div>
             </button>
             <div class="header__cart-pic" id="cart-pic">
             <img src="./src/img/icons8-корзина-48.png" alt="basket">
-            <div class="header__cart-pic_count">0</div>
+            <div class="header__cart-pic_count" id="cart-counter-2">0</div>
             </div>
         </div>
     </header>
@@ -89,24 +89,12 @@
     <div class="modal-cart" id="modal-cart">
         <div class="modal-cart__body" id="modal-body">
             <div class="modal-cart__close" id="modal-close">&#10006</div>
-            <ul class="modal-cart__list">
-                <li class="modal-cart__empty-item">Корзина пуста...</li>
-                <li class="modal-cart__item">
-                    <div class="modal-cart__item_wrap-img">
-                        <img class = "modal-cart__item_image" src="./src/img/img.jpg" alt="image">
-                    </div>
-                    <p class="modal-cart__item_title">Snowboard</p>
-                    <div class="modal-cart__item_wrap-price">
-                        <p class="modal-cart__item_count">1</p>
-                        <p class="modal-cart__item_mult">x</p>
-                        <p class="modal-cart__item_price">900 руб.</p>
-                    </div>
-                </li>
+            <ul class="modal-cart__list" id="modal-cart__list">
             </ul>
             <div class="modal-cart__bottom">
-                <button class="modal-cart__clear btn">Очистить корзину</button>
-                <button class="modal-cart__order btn">Оформить заказ</button>
-                <div class="modal-cart__total">Итого: 900 руб.</div>
+                <button class="modal-cart__clear btn" id="cart_clear">Очистить корзину</button>
+                <button class="modal-cart__order btn" id="cart_order">Оформить заказ</button>
+                <div class="modal-cart__total" id="total_price"></div>
             </div>
         </div>
     </div>
