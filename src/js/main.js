@@ -9,37 +9,122 @@ const modalCart = document.getElementById("modal-cart");
 const modalPic = document.getElementById("modal-pic");
 const closePic = document.getElementById("modal-pic-close");
 const modalPicWrapper = document.getElementById('modal-pic__wrapper-img')
+const cartWrapper = document.getElementById('modal-cart__list')
+const clearCart = document.getElementById('modal-cart__clear')
+const totalPrice = document.getElementById('modal-cart__total')
 const preloader = document.getElementById("preloader")
+const cardCount = document.getElementById("header__cart-pic_count")
 
 
+let price = 0;
+let cardValues = 0;
+let cardId = {};
+cardCount.innerText = '0';
 
-const filterSearch = [];
-// openCartBtn.addEventListener('click', function(e) {
-//     e.preventDefault();
-//     modalCart.classList.add('open-cart');
-// })
+openCartBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    modalCart.classList.add('open-cart');
+    renderCart()
+})
 
-// openCartPic.addEventListener('click', (e) => {
-//     e.preventDefault();
-//     modalCart.classList.add('open-cart');
-// })
+openCartPic.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalCart.classList.add('open-cart');
+})
 
-// closeCart.addEventListener('click', () => {
-//     modalCart.classList.remove('open-cart');
-// })
+closeCart.addEventListener('click', () => {
+    modalCart.classList.remove('open-cart');
+})
 
-// window.addEventListener('click', (e) => {
-//     if (e.target == modalCart) {
-//         modalCart.classList.remove('open-cart');
-//     }
-//     if (e.target == modalPic) {
-//         modalPic.classList.remove('open-pic');
-//     }
-// })
-
+window.addEventListener('click', (e) => {
+    if (e.target == modalCart) {
+        modalCart.classList.remove('open-cart');
+    }
+    if (e.target == modalPic) {
+        modalPic.classList.remove('open-pic');
+    }
+})
 
 closePic.addEventListener('click', () => {
     modalPic.classList.remove('open-pic');
+})
+
+
+
+//Добавление товаров в КОРЗИНУ
+function moveToCart(data){
+    if(localStorage.getItem('cartList')){
+        cardId = JSON.parse(localStorage.getItem('cartList'))
+    }
+
+    if(cardId[data.id]){
+        cardId[data.id] +=1;
+    } else{
+        cardId[data.id]=1;
+    }
+    localStorage.setItem('cartList', JSON.stringify(cardId))  
+    cardValues = Object.values(JSON.parse(localStorage.getItem('cartList'))).reduce((el,calc)=>
+        el+calc,0
+    )
+    localStorage.setItem('cardCount',JSON.stringify(cardValues))
+    cardCount.innerText = cardValues;
+
+}
+ 
+if(localStorage.getItem('cardCount')){
+    cardCount.innerText = JSON.parse(localStorage.getItem('cardCount'))
+} else {
+    cardCount.innerText = '0';
+}
+
+//РЕНДЕРИНГ КАРТОЧЕК
+async function renderCart(){
+
+    let responce = await fetch('https://63a9d787594f75dc1dc20983.mockapi.io/api/wildberries/v1/WB')
+    return  await responce.json()
+        .then((data) =>{
+            cartWrapper.innerHTML = '';
+            if(localStorage.getItem('cartList')){
+                cardId = JSON.parse(localStorage.getItem('cartList'));
+            }
+            
+            let displayItems = '';
+            data.forEach(function(el){
+                if(el.id in cardId){
+                displayItems=`
+                <li class="modal-cart__item" >
+                    <div class="modal-cart__item_wrap-img">
+                     <img class = "modal-cart__item_image" src="${el.url}" alt="image">
+                 </div>
+                 <p class="modal-cart__item_title">${el.title}</p>
+                 <div class="modal-cart__item_wrap-price">
+                     <p class="modal-cart__item_count">${cardId[el.id]}</p>
+                     <p class="modal-cart__item_mult">x</p>
+                     <p class="modal-cart__item_price">${el.truePrice} руб.</p>
+                 </div>
+                 </li>
+                 `;
+                 price += (el.truePrice*cardId[el.id]);
+                }
+                
+                 cartWrapper.insertAdjacentHTML("afterbegin", displayItems);
+                 totalPrice.innerText = price;
+            })
+        })
+
+
+
+}
+    
+clearCart.addEventListener('click',()=>{
+    localStorage.removeItem('cartList')
+    localStorage.removeItem('cardCount')
+    cartWrapper.innerHTML='';  
+    totalPrice.innerText = `0`     
+    cardCount.innerText = '0';
+    cartWrapper.innerHTML=`
+    <li class="modal-cart__empty-item">Корзина пуста...</li>
+    `          
 })
 
 //ПОИСК ЭЛЕМЕНТОВ ЧЕРЕЗ INPUT
@@ -114,9 +199,10 @@ function renderCards(data){
         `
     })
 
-    // rowList
-    //     .querySelector(`buttom[id="${item.id}"]`)
-    //     .addEventListener('click', () => inCart(item))
+    //КЛИК НА КНОПКУ "Добавить в корзину"
+    rowList
+        .querySelector(`button[id="${item.id}"]`)
+        .addEventListener('click', () => moveToCart(item))
 
 
     // //КЛИК НА КНОПКУ "Добавить в корзину"
