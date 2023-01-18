@@ -34,6 +34,14 @@
         align-items: center;
         opacity: 0;
         transition: opacity .6s ease;
+        &::before {
+            display: block;
+            content: '';
+            height: 35px;
+            width: 35px;
+            background-image: url('https://img.icons8.com/ios-filled/512/zoom-to-extents.png');
+            background-size: contain;
+        }
         img {
             width: 35px;
             height: auto;
